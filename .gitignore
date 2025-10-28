@@ -1,0 +1,7 @@
+.bmad-core/
+.gemini/
+.github/
+node_modules/
+package-lock.json
+package.json
+.vscode/
