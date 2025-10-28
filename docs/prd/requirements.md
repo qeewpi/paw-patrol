@@ -1,0 +1,81 @@
+# Requirements
+
+### Functional Requirements
+
+- **FR1:** System shall allow new users to register with email, password, name, and rescue verification documents (photos with cats, vet bills, organization affiliation, or written statement)
+- **FR2:** System shall provide admin panel for manual review and approval/rejection of user registration applications with verification document viewing
+- **FR3:** System shall display pending approval status page for applicants awaiting verification
+- **FR4:** System shall authenticate users via login with email and password, issuing JWT tokens with 30-day expiration for session management
+- **FR5:** System shall provide "Forgot Password" functionality allowing users to reset passwords via email verification
+- **FR6:** System shall support user roles including Regular User, Admin, and Super Admin (single account can have multiple roles)
+- **FR7:** System shall display interactive map centered on user's current location with pan and zoom functionality, hard-restricted to Philippines geographic boundaries
+- **FR8:** System shall default map center to Manila, Philippines if user denies location access or GPS is unavailable
+- **FR9:** System shall display tutorial overlay or instructions on map empty state for first-time users with no colonies created
+- **FR10:** System shall display colony pins on map with circular photo thumbnails or default icons
+- **FR11:** System shall allow users to tap/click colony pins to navigate to Colony Details page
+- **FR12:** System shall provide always-visible search bar at top of map for searching by Colony Name, Cat Name, or Location (address/city)
+- **FR13:** System shall display search results as a list ordered by proximity to user's current location using straight-line distance calculation (Haversine formula), with distance indicator for each result
+- **FR14:** System shall allow navigation to each colony or point of interest from search results before exiting search
+- **FR15:** System shall support simultaneous search and filter operations (e.g., search for "Tabby" AND filter by "Neutered" status)
+- **FR16:** System shall filter and display only colonies meeting filter conditions on the map when user presses search/apply filters button
+- **FR17:** System shall provide filter icon next to search bar opening filter panel with categorized filter options
+- **FR18:** System shall provide Status filter with options for Active, Adopted, Relocated, Missing, Deceased (defaults to Active)
+- **FR19:** System shall provide Health & Feeding filter with Medical Alert toggle (manually set by users) and Feeding Status (Fed Today/Not Fed Today based on area timezone)
+- **FR20:** System shall calculate "Fed Today" status by checking if most recent feeding activity timestamp is within current day in Philippines timezone (GMT+8)
+- **FR21:** System shall provide TNR Status filter with options for Neutered/Unneutered
+- **FR22:** System shall provide Behavior filter with predefined temperament tag options: Friendly, Shy, Aggressive, Feral, Playful, Cautious
+- **FR23:** System shall provide Basic Info filter with Gender options and Age Range options: Kitten (0-6 months), Young (6mo-2yr), Adult (2-7yr), Senior (7+yr)
+- **FR24:** System shall prevent creation of duplicate colonies at the exact same GPS coordinates (within 1 meter radius)
+- **FR25:** System shall allow creation of multiple colonies in close proximity (beyond 1 meter radius) to support real-world scenarios like multiple colonies within condominium areas
+- **FR26:** System shall allow users to create new colonies by tapping '+' button or long-pressing (500ms duration) map location, capturing GPS coordinates or address
+- **FR27:** System shall prevent deletion of colonies if dependent data exists (cats, activities, or other user contributions)
+- **FR28:** System shall allow colony deletion by Super Admin or colony creator only when colony has no dependent data (all cats removed or no activities logged)
+- **FR29:** System shall display Colony Details page showing colony name (editable by any verified user), cat count, clickable list of individual cats by name, activity log, status tags, TNR progress indicator, and back button to return to map
+- **FR30:** System shall allow users to navigate to individual Cat Profile pages by clicking/tapping cat names from the clickable list on Colony Details page
+- **FR31:** System shall provide back button on Cat Profile pages to return to Colony Details page
+- **FR32:** System shall allow users to add new cats to a colony via "Add New Cat" button with quick-add form requiring name (mandatory) and optional photo and distinguishing features
+- **FR33:** System shall display comprehensive Cat Profile pages with sections for Status, Basic Info (with Gender as mandatory field), Health Info (including manually-set Medical Alert toggle), TNR Info, Behavioral Info (with predefined temperament tags), History, and cat-specific activity log
+- **FR34:** System shall allow users to update cat status (Active, Adopted, Relocated, Missing, Deceased) via "Update Status" button
+- **FR35:** System shall allow any verified user to edit cat profile information via "Edit" button for MVP (future versions will restrict to Colony Managers)
+- **FR36:** System shall provide "Log Activity" functionality on Colony Details page for colony-level activities (accessible to all cats in colony)
+- **FR37:** System shall provide "Log Activity" functionality on Cat Profile pages for cat-specific activities only (not colony-level activities)
+- **FR38:** System shall capture activity logs with Activity Category dropdown (Feeding, Health, Environment), conditional Action field based on selected category, optional notes, optional photo upload, automatic or user-specified timestamp, and user attribution
+- **FR39:** System shall provide Feeding action options: Fed Wet Food, Fed Dry Food, Fed Treats, Refilled Water
+- **FR40:** System shall provide Health action options: Gave Medication, Wound Treatment, Vet Visit, Vaccination, Health Check, Trapped for TNR, Spay/Neuter Surgery
+- **FR41:** System shall provide Environment action options: Cleaned Area, Refilled Water Station, Shelter Maintenance, Waste Removal
+- **FR42:** System shall display activities in colony-level activity log (showing all colony-wide activities and individual cat activities)
+- **FR43:** System shall display activities in cat-specific activity logs (showing only activities related to that individual cat)
+- **FR44:** System shall allow activity log creators to edit all activity details (category, action, notes, timestamp, and photos) after submission
+- **FR45:** System shall allow activity log creators to add or remove photos from activity logs after initial submission
+- **FR46:** System shall handle concurrent edits to same cat profile or activity log using last-write-wins strategy
+- **FR47:** System shall generate system audit events (Colony Created, Cat Added, Profile Edited, Activity Log Edited) and display them in activity logs
+- **FR48:** System shall allow activity log filtering by "Today", "All Time", or specific date ranges
+- **FR49:** System shall store colony locations as latitude/longitude decimal coordinates compatible with Google Maps Platform APIs
+- **FR50:** System shall support photo gallery uploads for cat profiles with maximum 10 photos per cat and maximum 5MB per photo file (video uploads not supported in MVP)
+- **FR51:** System shall support photo uploads for activity logs with maximum 3 photos per activity log entry and maximum 5MB per photo file
+- **FR52:** System shall display cat count and status tags (e.g., "Last Fed: 8:30 AM") generated from most recent activity timestamps on Colony Details page
+- **FR53:** System shall calculate and display TNR progress (e.g., "5 of 10 cats neutered") by counting cats with confirmed neuter status from TNR Info section, excluding cats with unknown TNR status from neutered count but including in total count
+- **FR54:** System shall auto-suggest colony names from address during colony creation
+- **FR55:** System shall allow all verified users to view all colonies and cats across the entire platform (no geographic or group-based restrictions for MVP)
+
+### Non-Functional Requirements
+
+- **NFR1:** Map load time shall be under 3 seconds on 4G mobile connection
+- **NFR2:** Activity logging submission without photos shall complete with confirmation in under 2 seconds
+- **NFR3:** Activity logging submission with photos shall complete with confirmation in under 5 seconds (accounting for photo upload time)
+- **NFR4:** Application shall be responsive and mobile-first, optimized for one-handed use on smartphones in field conditions
+- **NFR5:** Application shall support modern browsers (Chrome, Firefox, Safari, Edge) last 2 versions for desktop and mobile
+- **NFR6:** All communications shall use HTTPS encryption (provided by Render hosting)
+- **NFR7:** User passwords shall be hashed using BCrypt via Spring Security before database storage
+- **NFR8:** File uploads shall be validated and sanitized to prevent malicious file execution
+- **NFR9:** Database queries shall use parameterized queries via JPA/Hibernate to prevent SQL injection
+- **NFR10:** Uploaded verification documents shall be stored securely with access restricted to admin users only
+- **NFR11:** System shall maintain complete audit trail with user attribution and timestamps for all data modifications
+- **NFR12:** Admin verification review and approval/rejection shall target 48-hour turnaround time from application submission
+- **NFR13:** Application shall aim to operate within Render free tier limits during prototype phase, with capability to upgrade to paid tier ($25-50/month) if needed
+- **NFR14:** Google Maps Platform API usage shall stay within free tier ($200/month credit) during pilot testing phase
+- **NFR15:** Image files shall be optimized for storage efficiency while maintaining sufficient quality for cat identification
+- **NFR16:** System shall implement role-based access control (RBAC) foundation to support future admin feature differentiation
+- **NFR17:** Application shall handle at least 10-20 colonies with 5-15 cats each without performance degradation (representative pilot scale)
+- **NFR18:** Application is web-based only; offline capability is not required for MVP
+
